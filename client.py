@@ -8,8 +8,8 @@ from PyQt5 import uic, QtGui
 
 from os import environ
 
-
 form_class = uic.loadUiType("edu.ui")[0]
+
 
 class Main(QMainWindow, form_class):
     Client_socket = None
@@ -32,7 +32,7 @@ class Main(QMainWindow, form_class):
 
     def teacher_chat_send(self):
         text = self.teacher_text_edit.text()
-        self.client_socket.send((text+"001").encode('utf-8'))
+        self.client_socket.send((text + "001").encode('utf-8'))
         self.teacher_text_edit.clear()
 
     def btn11(self):
@@ -41,8 +41,8 @@ class Main(QMainWindow, form_class):
     def btn22(self):
         self.stackedWidget.setCurrentIndex(3)
 
-    def initialize_socket(self,ip,port):
-        self.client_socket = socket(AF_INET,SOCK_STREAM)
+    def initialize_socket(self, ip, port):
+        self.client_socket = socket(AF_INET, SOCK_STREAM)
         remote_ip = ip
         remote_port = port
         self.client_socket.connect((remote_ip, remote_port))
@@ -51,11 +51,11 @@ class Main(QMainWindow, form_class):
         t = Thread(target=self.receive_message, args=(self.client_socket,))
         t.start()
 
-    def receive_message(self,so):
+    def receive_message(self, so):
         while True:
             buf = so.recv(512)
             text = buf.decode('utf-8')
-            if not buf: #연결 종료 됨
+            if not buf:  # 연결 종료 됨
                 break
             if text[-3:] == '001':
                 self.teacher_chat_view_list.addItem(text[:-3])
@@ -65,10 +65,9 @@ class Main(QMainWindow, form_class):
         so.close()
 
 
-
 if __name__ == "__main__":
-    ip = '10.10.21.112'
-    port = 55000
+    ip = '127.0.0.1'
+    port = 9000
 
     environ["QT_DEVICE_PIXEL_RATIO"] = "0"
     environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
