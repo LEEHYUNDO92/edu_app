@@ -887,7 +887,7 @@
       <attribute name="title">
        <string>QnA</string>
       </attribute>
-      <widget class="QLabel" name="label_38">
+      <widget class="QLabel" name="answer_stu_lbl">
        <property name="geometry">
         <rect>
          <x>450</x>
@@ -900,7 +900,7 @@
         <string>답변 완료 여부 확인 라벨 </string>
        </property>
       </widget>
-      <widget class="QListWidget" name="listWidget">
+      <widget class="QListWidget" name="qna_stu_listwidget">
        <property name="geometry">
         <rect>
          <x>90</x>
@@ -910,7 +910,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="qna_stu_linedit">
        <property name="geometry">
         <rect>
          <x>90</x>
@@ -920,7 +920,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="qna_stu_btn2">
        <property name="geometry">
         <rect>
          <x>426</x>
@@ -933,7 +933,7 @@
         <string>보내기</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="qna_stu_btn">
        <property name="geometry">
         <rect>
          <x>150</x>
@@ -946,7 +946,7 @@
         <string>조회</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="qna_del_stu_btn">
        <property name="geometry">
         <rect>
          <x>370</x>
@@ -964,7 +964,7 @@
       <attribute name="title">
        <string>포인트 및 등급</string>
       </attribute>
-      <widget class="QLabel" name="label_39">
+      <widget class="QLabel" name="index_name_stu_lbl">
        <property name="geometry">
         <rect>
          <x>250</x>
@@ -990,17 +990,17 @@
         <string>시험 응시 내역 및 결과</string>
        </property>
       </widget>
-      <widget class="QTableWidget" name="tableWidget">
+      <widget class="QTableWidget" name="test_stu_tablewidget">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>8</x>
          <y>340</y>
          <width>591</width>
          <height>192</height>
         </rect>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_5">
+      <widget class="QPushButton" name="test_stu_btn">
        <property name="geometry">
         <rect>
          <x>525</x>
@@ -1013,7 +1013,7 @@
         <string>조회</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_41">
+      <widget class="QLabel" name="grade_stu_lbl">
        <property name="geometry">
         <rect>
          <x>454</x>
@@ -1041,7 +1041,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>?? 이건 뭘 말하는거지?</string>
+        <string/>
        </property>
       </widget>
      </widget>
