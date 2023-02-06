@@ -673,16 +673,6 @@
         <string>주제</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="student_quiz_title_list">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>30</y>
-         <width>161</width>
-         <height>201</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QPushButton" name="quiz_start_btn">
        <property name="geometry">
         <rect>
@@ -859,6 +849,16 @@
        </property>
        <property name="text">
         <string>정답 입력</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="tableWidget">
+       <property name="geometry">
+        <rect>
+         <x>23</x>
+         <y>34</y>
+         <width>151</width>
+         <height>192</height>
+        </rect>
        </property>
       </widget>
      </widget>
