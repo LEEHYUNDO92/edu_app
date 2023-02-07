@@ -40,11 +40,11 @@ class ThreadClass:
             if dic_data['method'] == 'check_id_result':
                 print('recv:', dic_data['method'])
                 if dic_data['result']:
-                    self.form.id_same_label.setVisible(False)
-                    self.form.id_same_btn.setEnabled(False)
+                    self.form.label_id_check.setVisible(False)
+                    self.form.btn_id_check.setEnabled(False)
                     self.form.isIDChecked = True
                 else:
-                    self.form.id_same_label.setVisible(True)
+                    self.form.label_id_check.setVisible(True)
                     self.form.isIDChecked = False
 
             if dic_data['method'] == 'login_result':
@@ -71,13 +71,28 @@ class ThreadClass:
                 qna_table.insertRow(row_num)
                 print(qna_table.rowCount())
                 qna_table.setItem(row_num, 0, QTableWidgetItem(str(dic_data['data'][0])))
-                qna_table.setItem(row_num, 1, QTableWidgetItem(dic_data['data'][2]))
-                qna_table.setItem(row_num, 2, QTableWidgetItem(dic_data['data'][3]))
-                if dic_data['data'][5] is None:
+                qna_table.setItem(row_num, 1, QTableWidgetItem(dic_data['data'][1]))
+                qna_table.setItem(row_num, 2, QTableWidgetItem(dic_data['data'][2]))
+                if dic_data['data'][3] is None:
                     qna_table.setItem(row_num, 3, QTableWidgetItem('대기'))
                 else:
                     qna_table.setItem(row_num, 3, QTableWidgetItem('완료'))
 
+            if dic_data['method'] == 'qna_detail_result':
+                print('recv:', dic_data['method'])
+                print('result:', dic_data['result'])
+                if self.form.login_user.auth == 's':
+                    self.form.label_stu_qna_title.setText(dic_data['result'][3])
+                    self.form.browser_stu_qna_content.append(dic_data['result'][4])
+                    self.form.label_stu_qna_stu_name.setText(dic_data['result'][2])
+                    self.form.label_stu_qna_stu_id.setText(dic_data['result'][1])
+                    self.form.label_stu_qna_add_time.setText(dic_data['result'][8])
+                else:
+                    self.form.label_tea_qna_title.setText(dic_data['result'][3])
+                    self.form.browser_tea_qna_content.append(dic_data['result'][4])
+                    self.form.label_tea_qna_stu_name.setText(dic_data['result'][2])
+                    self.form.label_tea_qna_stu_id.setText(dic_data['result'][1])
+                    self.form.label_tea_qna_add_time.setText(dic_data['result'][8])
 
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
     def send_check_id(self, input_id):
@@ -104,6 +119,12 @@ class ThreadClass:
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
 
+    def send_qna_detail(self, qna_num):
+        data = {"method": 'qna_detail', "qna_num": qna_num}
+        print('send:', data['method'])
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+
 
 class WindowClass(QMainWindow, form_class):
     login_user = None
@@ -118,25 +139,25 @@ class WindowClass(QMainWindow, form_class):
         self.thread = ThreadClass(self)  # 스레드에 GUI 같이 넘겨주기
 
         self.stackedWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tab_student.setCurrentIndex(0)
 
-        self.main_login_btn.clicked.connect(self.go_login)
-        self.main_sign_in_btn.clicked.connect(self.go_sign_in)
-        self.login_btn.clicked.connect(self.login)
-        self.sign_btn.clicked.connect(self.sign_in)
+        self.btn_main_to_login.clicked.connect(self.go_login)
+        self.btn_main_to_sign_in.clicked.connect(self.go_sign_in)
+        self.btn_login.clicked.connect(self.login)
+        self.btn_sign_in.clicked.connect(self.sign_in)
 
-        self.id_same_btn.clicked.connect(self.check_id)
-        self.id_edit.textChanged.connect(self.id_changed)
-        self.password1_edit.textChanged.connect(self.pw_changed)
-        self.password2_edit.textChanged.connect(self.pw_changed)
+        self.btn_id_check.clicked.connect(self.check_id)
+        self.input_sign_in_id.textChanged.connect(self.id_changed)
+        self.input_sign_in_pw.textChanged.connect(self.pw_changed)
+        self.input_sign_in_pw_ck.textChanged.connect(self.pw_changed)
 
-        self.tabWidget_2.currentChanged.connect(self.tab_changed)
-        self.tabWidget.currentChanged.connect(self.tab_changed)
+        self.tab_student.currentChanged.connect(self.tab_changed)
+        self.tab_teacher.currentChanged.connect(self.tab_changed)
 
-        # self.qna_stu_table.doubleClicked.connect(self.view_qna_detail)
+        self.qna_stu_table.doubleClicked.connect(self.view_qna_detail)
 
-        self.student_radio.clicked.connect(self.set_auth)
-        self.teacher_radio.clicked.connect(self.set_auth)
+        self.radio_sign_in_student.clicked.connect(self.set_auth)
+        self.radio_sign_in_teacher.clicked.connect(self.set_auth)
 
     def go_login(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -145,9 +166,9 @@ class WindowClass(QMainWindow, form_class):
         self.stackedWidget.setCurrentIndex(2)
 
     def tab_changed(self):
-        page1 = self.tabWidget_2.currentWidget()
-        page2 = self.tabWidget.currentWidget()
-        if page1 == self.tab_8 or page2 == self.tab_4:
+        tab_student = self.tab_student.currentWidget()
+        tab_teacher = self.tab_teacher.currentWidget()
+        if tab_student == self.tab_stu_qna or tab_teacher == self.tab_tea_qna:
             print('tab_qna')
             self.load_qna()
 
@@ -156,9 +177,19 @@ class WindowClass(QMainWindow, form_class):
         self.qna_tea_table.setRowCount(0)
         self.thread.send_load_table()
 
+    def view_qna_detail(self):
+        sender = self.sender()
+        print(sender == self.qna_stu_table)
+        row = sender.currentIndex().row()
+        print(row)
+        sel_data = sender.item(row, 0).text()
+        print(sel_data)
+        self.thread.send_qna_detail(sel_data)
+        self.stack_stu_qna.setCurrentWidget(self.stack_stu_qna_detail)
+
     def login(self):
-        input_id = self.login_id_edit.text()
-        input_pw = self.login_password_edit.text()
+        input_id = self.input_login_id.text()
+        input_pw = self.input_login_pw.text()
         self.thread.send_login(input_id, input_pw)
         time.sleep(0.1)
         if self.login_user is not None:
@@ -171,42 +202,42 @@ class WindowClass(QMainWindow, form_class):
             print('no')
 
     def check_id(self):
-        self.thread.send_check_id(self.id_edit.text())
+        self.thread.send_check_id(self.input_sign_in_id.text())
 
     def id_changed(self):
         self.isIDChecked = False
-        self.id_same_btn.setEnabled(True)
+        self.btn_id_check.setEnabled(True)
 
     def pw_changed(self):
-        if self.password1_edit.text().isdigit() or self.password1_edit.text().isalpha() or len(
-                self.password1_edit.text()) < 8:
+        if self.input_sign_in_pw.text().isdigit() or self.input_sign_in_pw.text().isalpha() or len(
+                self.input_sign_in_pw.text()) < 8:
             self.isPWRuleChecked = False
         else:
             self.isPWRuleChecked = True
-        if self.password1_edit.text() != self.password2_edit.text():
+        if self.input_sign_in_pw.text() != self.input_sign_in_pw_ck.text():
             self.isPWSameChecked = False
         else:
             self.isPWSameChecked = True
 
     def sign_in(self):
-        if 0 in [len(self.id_edit.text()), len(self.password1_edit.text()), len(self.password2_edit.text()),
-                 len(self.name_edit.text())] or self.auth is None:
+        if 0 in [len(self.input_sign_in_id.text()), len(self.input_sign_in_pw.text()), len(self.input_sign_in_pw_ck.text()),
+                 len(self.input_sign_in_name.text())] or self.auth is None:
             QMessageBox.warning(self, '경고', '모든 입력칸을 확인해주세요')
         elif not self.isIDChecked:
             QMessageBox.warning(self, '경고', '아이디 중복 확인을 해주세요')
         elif not self.isPWRuleChecked or not self.isPWSameChecked:
             QMessageBox.warning(self, '경고', '비밀번호를 확인해주세요')
         else:
-            input_id = self.id_edit.text()
-            input_pw = self.password1_edit.text()
-            input_name = self.name_edit.text()
+            input_id = self.input_sign_in_id.text()
+            input_pw = self.input_sign_in_pw.text()
+            input_name = self.input_sign_in_name.text()
             input_auth = self.auth
             self.thread.send_registration(input_id, input_pw, input_name, input_auth)
 
     def set_auth(self):
-        if self.student_radio.isChecked():
+        if self.radio_sign_in_student.isChecked():
             self.auth = 's'
-        elif self.teacher_radio.isChecked():
+        elif self.radio_sign_in_teacher.isChecked():
             self.auth = 't'
 
 

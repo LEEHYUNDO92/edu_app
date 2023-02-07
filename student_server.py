@@ -85,10 +85,8 @@ def threaded(client_socket, addr):
 
             if dic_data['method'] == 'load_table':
                 print(dic_data['method'], dic_data['member_num'])
-                sql = "SELECT a.num, a.student_num, b.uname, a.title, a.content, " \
-                      "a.teacher_num, c.uname, a.answer, a.add_time, a.edit_time " \
-                      "FROM qna a " \
-                      "LEFT JOIN member b on a.student_num = b.num LEFT JOIN member c on a.teacher_num = c.num"
+                sql = "SELECT a.num, b.uname, a.title, a.teacher_num FROM qna a " \
+                      "LEFT JOIN member b on a.student_num = b.num"
                 print(sql)
                 with conn_fetch() as cur:
                     cur.execute(sql)
@@ -96,6 +94,22 @@ def threaded(client_socket, addr):
                     print(result)
                     dic_data['method'] = 'load_table_result'
                     dic_data['result'] = result
+
+            if dic_data['method'] == 'qna_detail':
+                print(dic_data['method'], dic_data['qna_num'])
+                # sql = f"SELECT * FROM qna WHERE num = {dic_data['qna_num']}"
+                sql = f"SELECT a.num, b.uid, b.uname, a.title, a.content, " \
+                      f"c.uid, c.uname, a.answer, a.add_time, a.edit_time " \
+                      f"FROM qna a " \
+                      f"LEFT JOIN member b on a.student_num = b.num LEFT JOIN member c on a.teacher_num = c.num " \
+                      f"WHERE a.num = {dic_data['qna_num']}"
+                print(sql)
+                with conn_fetch() as cur:
+                    cur.execute(sql)
+                    result = cur.fetchall()
+                    print(result)
+                    dic_data['method'] = 'qna_detail_result'
+                    dic_data['result'] = result[0]
 
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':
@@ -149,7 +163,6 @@ server_socket.listen()
 try:
     while True:
         print('>> Wait')
-
         client_socket, addr = server_socket.accept()
         client_sockets.append(client_socket)
         start_new_thread(threaded, (client_socket, addr))
