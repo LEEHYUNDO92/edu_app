@@ -50,9 +50,7 @@ class MultiChatServer:
                         socket.sendall(json_data.encode())
 
                 elif dic_data['method'] == '002':
-                    print(dic_data)
-                    print(dic_data['text'])
-                    print(dic_data['text'][0])
+
 
                     ###################################################### Data base 접속 start
                     con = pymysql.connect(host=host_str, user=user_str, password=password_str, db='eduapp', charset='utf8')

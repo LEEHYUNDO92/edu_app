@@ -11,6 +11,10 @@ from os import environ
 
 import json
 
+import requests
+import xmltodict
+from bs4 import BeautifulSoup
+
 form_class = uic.loadUiType("edu.ui")[0]
 
 class Main(QMainWindow, form_class):
@@ -33,6 +37,69 @@ class Main(QMainWindow, form_class):
         self.show_teacher_score()
 
         self.a_btn.clicked.connect(self.show_teacher_topic)
+
+        self.aaa_btn.clicked.connect(self.show_bird_list)
+        self.show_bird_list()
+
+        self.bird_list.itemClicked.connect(self.show_bird_contents)
+
+
+    def show_bird_contents(self):
+        text = self.bird_list.selectedItems()
+        text = text[0].text()
+        print(text)
+        #
+        key = "NduHOhIXFSeGjCmd2mxVGcIDVRgR9ooMiRLXcDTwFxBuenEsZEtIsxYy43lSSDxGyn0OsPpOQ8as3Yffw37wbg%3D%3D"
+
+        url = f'http://apis.data.go.kr/1400119/BirdService/birdSpcmSearch?serviceKey={key}&st=3&sw={text}&numOfRows=15000&pageNo=1'
+        content = requests.get(url).content  # request 모듈을 이용해서 정보 가져오기(byte형태로 가져와지는듯)
+        dict = xmltodict.parse(content)  # xmltodict 모듈을 이용해서 딕셔너리화 & 한글화
+        jsonString = json.dumps(dict, ensure_ascii=False)  # json.dumps를 이용해서 문자열화(데이터를 보낼때 이렇게 바꿔주면 될듯)
+        jsonObj = json.loads(jsonString)  # 데이터 불러올 때(딕셔너리 형태로 받아옴)
+
+        knam = jsonObj['response']['body']['items']['item']['anmlSmplNo']
+
+
+        url = f'http://apis.data.go.kr/1400119/BirdService/birdSpcmInfo?serviceKey={key}&q1={knam}'
+        content = requests.get(url).content  # request 모듈을 이용해서 정보 가져오기(byte형태로 가져와지는듯)
+        dict = xmltodict.parse(content)  # xmltodict 모듈을 이용해서 딕셔너리화 & 한글화
+        jsonString = json.dumps(dict, ensure_ascii=False)  # json.dumps를 이용해서 문자열화(데이터를 보낼때 이렇게 바꿔주면 될듯)
+        jsonObj = json.loads(jsonString)  # 데이터 불러올 때(딕셔너리 형태로 받아옴)
+
+        anmlSpecsId = jsonObj['response']['body']['item']['anmlSpecsId']
+
+        #
+        url = f'http://apis.data.go.kr/1400119/BirdService/birdIlstrInfo?serviceKey={key}&q1={anmlSpecsId}'
+        content = requests.get(url).content  # request 모듈을 이용해서 정보 가져오기(byte형태로 가져와지는듯)
+        dict = xmltodict.parse(content)  # xmltodict 모듈을 이용해서 딕셔너리화 & 한글화
+        jsonString = json.dumps(dict, ensure_ascii=False)  # json.dumps를 이용해서 문자열화(데이터를 보낼때 이렇게 바꿔주면 될듯)
+        jsonObj = json.loads(jsonString)  # 데이터 불러올 때(딕셔너리 형태로 받아옴)
+
+        self.eclgDpftrCont_list.clear()
+        self.gnrlSpftrCont_list.clear()
+        self.eclgDpftrCont_list.addItem(jsonObj['response']['body']['item']['eclgDpftrCont'])
+        self.gnrlSpftrCont_list.addItem(jsonObj['response']['body']['item']['gnrlSpftrCont'])
+        print(jsonObj['response']['body']['item']['eclgDpftrCont'])
+        print(jsonObj['response']['body']['item']['gnrlSpftrCont'])
+
+    def show_bird_list(self):
+        self.bird_list.clear()
+        key = "NduHOhIXFSeGjCmd2mxVGcIDVRgR9ooMiRLXcDTwFxBuenEsZEtIsxYy43lSSDxGyn0OsPpOQ8as3Yffw37wbg%3D%3D"
+        url = f'http://apis.data.go.kr/1400119/BirdService/birdSpcmSearch?serviceKey={key}&st=1&sw=&numOfRows=15000&pageNo=1'
+
+        content = requests.get(url).content  # request 모듈을 이용해서 정보 가져오기(byte형태로 가져와지는듯)
+        dict = xmltodict.parse(content)  # xmltodict 모듈을 이용해서 딕셔너리화 & 한글화
+        jsonString = json.dumps(dict, ensure_ascii=False)  # json.dumps를 이용해서 문자열화(데이터를 보낼때 이렇게 바꿔주면 될듯)
+        jsonObj = json.loads(jsonString)  # 데이터 불러올 때(딕셔너리 형태로 받아옴)
+
+        animal_name_list = []
+        for item in jsonObj['response']['body']['items']['item']:
+            animal_name_list.append(item['anmlGnrlNm'])
+        print(animal_name_list)
+        animal_list = set(animal_name_list)
+        for x in sorted(animal_list):
+            self.bird_list.addItem(x)
+
 
     def show_teacher_score(self):
         time.sleep(0.5)

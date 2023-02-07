@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="main_sign_in_btn">
@@ -353,7 +353,7 @@
     <widget class="QTabWidget" name="tabWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>60</y>
        <width>611</width>
        <height>661</height>
@@ -481,7 +481,7 @@
         <item row="6" column="1">
          <widget class="QLabel" name="label_35">
           <property name="text">
-           <string>                                                                             </string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -761,12 +761,90 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
        <string>학습UI</string>
       </attribute>
+      <widget class="QListWidget" name="bird_list">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>211</width>
+         <height>192</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="aaa_btn">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>40</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="eclgDpftrCont_list">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>280</y>
+         <width>561</width>
+         <height>131</height>
+        </rect>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="autoScroll">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_38">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>260</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;생태 특징 내용&gt;</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="gnrlSpftrCont_list">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>453</y>
+         <width>561</width>
+         <height>131</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_39">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>433</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;일반 특징 내용&gt;</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_7">
       <attribute name="title">
@@ -913,7 +991,7 @@
         <item row="6" column="1">
          <widget class="QLabel" name="label_37">
           <property name="text">
-           <string>                                                                     </string>
+           <string/>
           </property>
          </widget>
         </item>
