@@ -360,7 +360,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -761,7 +761,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
@@ -777,38 +777,6 @@
         </rect>
        </property>
       </widget>
-      <widget class="QPushButton" name="aaa_btn">
-       <property name="geometry">
-        <rect>
-         <x>240</x>
-         <y>40</y>
-         <width>75</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-      <widget class="QListWidget" name="eclgDpftrCont_list">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>280</y>
-         <width>561</width>
-         <height>131</height>
-        </rect>
-       </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
-       </property>
-       <property name="autoScroll">
-        <bool>true</bool>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_38">
        <property name="geometry">
         <rect>
@@ -822,16 +790,6 @@
         <string>&lt;생태 특징 내용&gt;</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="gnrlSpftrCont_list">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>453</y>
-         <width>561</width>
-         <height>131</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_39">
        <property name="geometry">
         <rect>
@@ -843,6 +801,58 @@
        </property>
        <property name="text">
         <string>&lt;일반 특징 내용&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="image_url_label">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>40</y>
+         <width>271</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border-image : url(http://www.nature.go.kr/fileUpload/animals/basic/KNAM-BI-0000881_001.jpg)</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QTextBrowser" name="eclgDpftrCont_brower">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>280</y>
+         <width>561</width>
+         <height>131</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QTextBrowser" name="gnrlSpftrCont_brower">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>450</y>
+         <width>561</width>
+         <height>131</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="learning_complete_btn">
+       <property name="geometry">
+        <rect>
+         <x>510</x>
+         <y>590</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>학습 완료</string>
        </property>
       </widget>
      </widget>
