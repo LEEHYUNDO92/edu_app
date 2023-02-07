@@ -45,10 +45,8 @@ def threaded(client_socket, addr):
                 break
             dic_data = json.loads(data.decode())  # json 데이터를 다시 파이썬 코드로 변환
 
-            # 여기서부터 if dic_data['method'] == 기능명: 이런 식으로 기능별 클라이언트에서 받아온 데이터 처리하는 코드 작성
-            """ 예시
             if dic_data['method'] == 'check_id':
-                print(dic_data['input_id'])
+                print(dic_data['method'], dic_data['input_id'])
                 dic_data['method'] = 'check_id_result'
                 sql = f"SELECT * FROM member WHERE uid = '{dic_data['input_id']}'"
                 with conn_fetch() as cur:
@@ -58,7 +56,32 @@ def threaded(client_socket, addr):
                         dic_data['result'] = True
                     else:
                         dic_data['result'] = False
-            """
+
+            if dic_data['method'] == 'login':
+                print(dic_data['method'], dic_data['uid'], dic_data['upw'])
+                dic_data['method'] = 'login_result'
+                sql = f"SELECT * FROM member WHERE uid = '{dic_data['uid']}' and upw = '{dic_data['upw']}'"
+                with conn_fetch() as cur:
+                    cur.execute(sql)
+                    result = cur.fetchall()
+                    print(result)
+                    if len(result) == 0:
+                        dic_data['result'] = False
+                    else:
+                        dic_data['result'] = True
+                        dic_data['login_info'] = result[0]
+
+            if dic_data['method'] == 'registration':
+                print(dic_data['method'], dic_data['uid'], dic_data['upw'], dic_data['uname'], dic_data['auth'])
+                dic_data['method'] = 'registration_result'
+                sql = f"INSERT INTO member (uid, upw, uname, auth) VALUES " \
+                      f"('{dic_data['uid']}', '{dic_data['upw']}', '{dic_data['uname']}', '{dic_data['auth']}')"
+                print(sql)
+                with conn_commit() as con:
+                    with con.cursor() as cur:
+                        cur.execute(sql)
+                        con.commit()
+                dic_data['result'] = True
 
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':

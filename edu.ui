@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>647</width>
-    <height>757</height>
+    <width>831</width>
+    <height>880</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,14 @@
   <widget class="QStackedWidget" name="stackedWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>0</y>
      <width>641</width>
      <height>751</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page">
     <widget class="QPushButton" name="main_sign_in_btn">
@@ -187,34 +187,19 @@
        <x>30</x>
        <y>310</y>
        <width>401</width>
-       <height>144</height>
+       <height>174</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="id_edit">
+      <item row="0" column="2">
+       <widget class="QPushButton" name="id_same_btn">
         <property name="font">
          <font>
           <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>이현도</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_12">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>비밀번호</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <string>아이디 중복확인</string>
         </property>
        </widget>
       </item>
@@ -227,6 +212,21 @@
         </property>
         <property name="text">
          <string>123</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="id_same_label">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>아이디 중복 NG</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -260,30 +260,6 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QPushButton" name="sign_btn">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>가입하기</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="id_same_btn">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>아이디 중복확인</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="password2_edit">
         <property name="font">
@@ -293,21 +269,6 @@
         </property>
         <property name="text">
          <string>123</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="id_same_label">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>아이디 중복 NG</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -323,6 +284,105 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="id_edit">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>이현도</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>비밀번호</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QPushButton" name="sign_btn">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>가입하기</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QGroupBox" name="auth_group">
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QRadioButton" name="student_radio">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>47</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>학생</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="teacher_radio">
+         <property name="geometry">
+          <rect>
+           <x>80</x>
+           <y>0</y>
+           <width>47</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>선생</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_24">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>이름</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="name_edit">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>123</string>
         </property>
        </widget>
       </item>
@@ -642,14 +702,14 @@
     <widget class="QTabWidget" name="tabWidget_2">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>10</x>
        <y>60</y>
        <width>611</width>
-       <height>661</height>
+       <height>731</height>
       </rect>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
@@ -663,8 +723,8 @@
       <widget class="QLabel" name="label_18">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>40</y>
+         <x>86</x>
+         <y>10</y>
          <width>56</width>
          <height>12</height>
         </rect>
@@ -673,207 +733,11 @@
         <string>주제</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="student_qna_title_list">
+      <widget class="QPushButton" name="quiz_start_btn">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>60</y>
-         <width>561</width>
-         <height>91</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QWidget" name="gridLayoutWidget_4">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
+         <x>62</x>
          <y>240</y>
-         <width>561</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="3" column="1" colspan="2">
-         <widget class="QLineEdit" name="student_qna_edit3_2"/>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_24">
-          <property name="text">
-           <string>2. 문제</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_25">
-          <property name="text">
-           <string>1. 문제</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1" colspan="2">
-         <widget class="QLineEdit" name="student_qna_edit4"/>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_27">
-          <property name="text">
-           <string>5. 문제</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1" colspan="2">
-         <widget class="QLineEdit" name="student_qna_edit2_2"/>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLabel" name="label_28">
-          <property name="text">
-           <string>정답</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="label_29">
-          <property name="text">
-           <string>정답</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="3">
-         <widget class="QLabel" name="label_30">
-          <property name="text">
-           <string>정답</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_31">
-          <property name="text">
-           <string>3. 문제</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_32">
-          <property name="text">
-           <string>주제</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="4">
-         <widget class="QLineEdit" name="student_qna_answer_edit3"/>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_33">
-          <property name="text">
-           <string>4. 문제</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="QLabel" name="label_34">
-          <property name="text">
-           <string>정답</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="3">
-         <widget class="QLabel" name="label_36">
-          <property name="text">
-           <string>정답</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1" colspan="2">
-         <widget class="QLineEdit" name="student_qna_edit5"/>
-        </item>
-        <item row="6" column="5">
-         <widget class="QPushButton" name="student_qna_send_btn">
-          <property name="text">
-           <string>제출</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QLabel" name="label_37">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" colspan="2">
-         <widget class="QLineEdit" name="student_qna_edit1"/>
-        </item>
-        <item row="2" column="4">
-         <widget class="QLineEdit" name="student_qna_answer_edit2"/>
-        </item>
-        <item row="0" column="1" colspan="2">
-         <widget class="QLineEdit" name="student_qna_title_edit"/>
-        </item>
-        <item row="1" column="4">
-         <widget class="QLineEdit" name="student_qna_answer_edit1"/>
-        </item>
-        <item row="5" column="4">
-         <widget class="QLineEdit" name="student_qna_answer_edit5"/>
-        </item>
-        <item row="4" column="4">
-         <widget class="QLineEdit" name="student_qna_answer_edit4"/>
-        </item>
-        <item row="1" column="5">
-         <widget class="QLabel" name="student_qna_check_edit1">
-          <property name="text">
-           <string>O</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="5">
-         <widget class="QLabel" name="student_qna_check_edit2">
-          <property name="text">
-           <string>O</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="5">
-         <widget class="QLabel" name="student_qna_check_edit3">
-          <property name="text">
-           <string>O</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="5">
-         <widget class="QLabel" name="student_qna_check_edit4">
-          <property name="text">
-           <string>O</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="5">
-         <widget class="QLabel" name="student_qna_check_edit5">
-          <property name="text">
-           <string>O</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QPushButton" name="pushButton">
-       <property name="geometry">
-        <rect>
-         <x>500</x>
-         <y>160</y>
          <width>75</width>
          <height>23</height>
         </rect>
@@ -882,16 +746,325 @@
         <string>시작</string>
        </property>
       </widget>
+      <widget class="QListWidget" name="student_quiz_content_1">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>30</y>
+         <width>341</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="student_qna_answer_edit1">
+       <property name="geometry">
+        <rect>
+         <x>304</x>
+         <y>126</y>
+         <width>161</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="quiz_insert_btn1">
+       <property name="geometry">
+        <rect>
+         <x>484</x>
+         <y>124</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>정답 입력</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="student_quiz_content_2">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>160</y>
+         <width>341</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="student_qna_answer_edit1_2">
+       <property name="geometry">
+        <rect>
+         <x>303</x>
+         <y>260</y>
+         <width>161</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="quiz_insert_btn2">
+       <property name="geometry">
+        <rect>
+         <x>485</x>
+         <y>258</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>정답 입력</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="student_quiz_content_3">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>300</y>
+         <width>341</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="student_qna_answer_edit1_3">
+       <property name="geometry">
+        <rect>
+         <x>304</x>
+         <y>395</y>
+         <width>161</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="quiz_insert_btn3">
+       <property name="geometry">
+        <rect>
+         <x>486</x>
+         <y>395</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>정답 입력</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="student_quiz_content_4">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>430</y>
+         <width>341</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="student_qna_answer_edit1_4">
+       <property name="geometry">
+        <rect>
+         <x>304</x>
+         <y>520</y>
+         <width>161</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="quiz_insert_btn4">
+       <property name="geometry">
+        <rect>
+         <x>483</x>
+         <y>520</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>정답 입력</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="student_quiz_content_5">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>554</y>
+         <width>341</width>
+         <height>81</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="student_qna_answer_edit1_5">
+       <property name="geometry">
+        <rect>
+         <x>305</x>
+         <y>644</y>
+         <width>161</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="quiz_insert_btn5">
+       <property name="geometry">
+        <rect>
+         <x>482</x>
+         <y>644</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>정답 입력</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="tableWidget">
+       <property name="geometry">
+        <rect>
+         <x>23</x>
+         <y>34</y>
+         <width>151</width>
+         <height>192</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
        <string>QnA</string>
       </attribute>
+      <widget class="QLabel" name="answer_stu_lbl">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>10</y>
+         <width>141</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>답변 완료 여부 확인 라벨 </string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="qna_stu_listwidget">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>90</y>
+         <width>411</width>
+         <height>251</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="qna_stu_linedit">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>390</y>
+         <width>331</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="qna_stu_btn2">
+       <property name="geometry">
+        <rect>
+         <x>426</x>
+         <y>390</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>보내기</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="qna_stu_btn">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>350</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>조회</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="qna_del_stu_btn">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>350</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>삭제</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_9">
       <attribute name="title">
        <string>포인트 및 등급</string>
       </attribute>
+      <widget class="QLabel" name="index_name_stu_lbl">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>130</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>XXX님 반갑습니다. </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_40">
+       <property name="geometry">
+        <rect>
+         <x>242</x>
+         <y>300</y>
+         <width>131</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>시험 응시 내역 및 결과</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="test_stu_tablewidget">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>340</y>
+         <width>591</width>
+         <height>192</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="test_stu_btn">
+       <property name="geometry">
+        <rect>
+         <x>525</x>
+         <y>306</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>조회</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="grade_stu_lbl">
+       <property name="geometry">
+        <rect>
+         <x>454</x>
+         <y>240</y>
+         <width>141</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>xxx님의 등급은 x입니다. </string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_10">
       <attribute name="title">
@@ -907,7 +1080,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>?? 이건 뭘 말하는거지?</string>
+        <string/>
        </property>
       </widget>
      </widget>
@@ -919,8 +1092,8 @@
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>200</y>
-         <width>381</width>
+         <y>100</y>
+         <width>451</width>
          <height>191</height>
         </rect>
        </property>
@@ -928,8 +1101,8 @@
       <widget class="QPushButton" name="student_send_btn">
        <property name="geometry">
         <rect>
-         <x>400</x>
-         <y>400</y>
+         <x>466</x>
+         <y>310</y>
          <width>75</width>
          <height>23</height>
         </rect>
@@ -941,9 +1114,9 @@
       <widget class="QLineEdit" name="student_text_edit">
        <property name="geometry">
         <rect>
-         <x>90</x>
-         <y>400</y>
-         <width>301</width>
+         <x>92</x>
+         <y>310</y>
+         <width>351</width>
          <height>20</height>
         </rect>
        </property>
