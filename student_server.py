@@ -83,11 +83,25 @@ def threaded(client_socket, addr):
                         con.commit()
                 dic_data['result'] = True
 
+            if dic_data['method'] == 'load_table':
+                print(dic_data['method'], dic_data['member_num'])
+                sql = "SELECT a.num, a.student_num, b.uname, a.title, a.content, " \
+                      "a.teacher_num, c.uname, a.answer, a.add_time, a.edit_time " \
+                      "FROM qna a " \
+                      "LEFT JOIN member b on a.student_num = b.num LEFT JOIN member c on a.teacher_num = c.num"
+                print(sql)
+                with conn_fetch() as cur:
+                    cur.execute(sql)
+                    result = cur.fetchall()
+                    print(result)
+                    dic_data['method'] = 'load_table_result'
+                    dic_data['result'] = result
+
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':
                 send_everyone(client_sockets, dic_data)
-            elif dic_data['method'] == 'load_chat_result':
-                send_chat_history(client_sockets, dic_data)
+            elif dic_data['method'] == 'load_table_result':
+                send_big_data(client_sockets, dic_data)
             else:
                 send_single(client_socket, dic_data)
 
@@ -102,22 +116,25 @@ def threaded(client_socket, addr):
 
 
 def send_everyone(client_sockets, dic_data):  # 채팅과 같은 접속 인원 모두에게 데이터를 전송할 때 사용
+    print('send:', dic_data['method'])
     for client in client_sockets:
         json_data = json.dumps(dic_data)
         client.sendall(json_data.encode())
 
 
 def send_single(client_socket, dic_data):  # 개인정보가 담긴 기능을 전송할 때 사용
+    print('send:', dic_data['method'])
     json_data = json.dumps(dic_data)
     client_socket.sendall(json_data.encode())
 
 
-def send_chat_history(client_sockets, dic_data):  # 대화 목록 불러오는 데에 사용
+def send_big_data(client_sockets, dic_data):  # 테이블에 값이 많은 경우 데에 사용
+    print('send:', dic_data['method'])
     result = dic_data['result']
     del dic_data['result']
     for i in result:
         for client in client_sockets:
-            dic_data['data'] = [i[1], i[3], str(i[2])]
+            dic_data['data'] = i
             json_data = json.dumps(dic_data)
             client.sendall(json_data.encode())
             time.sleep(0.05)

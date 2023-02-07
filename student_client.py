@@ -38,7 +38,7 @@ class ThreadClass:
 
             # 여기서부터 if dic_data['method'] == 기능명: 이런 식으로 기능별 서버에서 받아온 데이터 처리하는 코드 작성
             if dic_data['method'] == 'check_id_result':
-                print(dic_data['result'])
+                print('recv:', dic_data['method'])
                 if dic_data['result']:
                     self.form.id_same_label.setVisible(False)
                     self.form.id_same_btn.setEnabled(False)
@@ -48,33 +48,59 @@ class ThreadClass:
                     self.form.isIDChecked = False
 
             if dic_data['method'] == 'login_result':
-                if dic_data['result']:
+                print('recv:', dic_data['method'])
+                if dic_data['method']:
                     self.form.login_user = User(dic_data['login_info'])
                     print('uid:', self.form.login_user.uid)
 
             if dic_data['method'] == 'registration_result':
-                print(dic_data['result'])
+                print('recv:', dic_data['method'])
                 if dic_data['result']:
                     self.form.stackedWidget.setCurrentIndex(0)
                 else:
                     print('no')
 
+            if dic_data['method'] == 'load_table_result':
+                print('recv:', dic_data['method'])
+                print('recv_data:', dic_data['data'])
+                row_num = dic_data['data'][0] - 1
+                if self.form.login_user.auth == 's':
+                    qna_table = self.form.qna_stu_table
+                else:
+                    qna_table = self.form.qna_tea_table
+                qna_table.insertRow(row_num)
+                print(qna_table.rowCount())
+                qna_table.setItem(row_num, 0, QTableWidgetItem(str(dic_data['data'][0])))
+                qna_table.setItem(row_num, 1, QTableWidgetItem(dic_data['data'][2]))
+                qna_table.setItem(row_num, 2, QTableWidgetItem(dic_data['data'][3]))
+                if dic_data['data'][5] is None:
+                    qna_table.setItem(row_num, 3, QTableWidgetItem('대기'))
+                else:
+                    qna_table.setItem(row_num, 3, QTableWidgetItem('완료'))
+
+
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
     def send_check_id(self, input_id):
         data = {"method": 'check_id', "input_id": input_id, "result": bool()}
-        print(data['method'])
+        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
 
     def send_login(self, uid, upw):
         data = {"method": 'login', "uid": uid, "upw": upw}
-        print(data['method'])
+        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
 
     def send_registration(self, uid, upw, uname, auth):
         data = {"method": 'registration', "uid": uid, "upw": upw, "uname": uname, "auth": auth}
-        print(data['method'])
+        print('send:', data['method'])
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+
+    def send_load_table(self):
+        data = {"method": 'load_table', "member_num": self.form.login_user.num}
+        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
 
@@ -92,6 +118,7 @@ class WindowClass(QMainWindow, form_class):
         self.thread = ThreadClass(self)  # 스레드에 GUI 같이 넘겨주기
 
         self.stackedWidget.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(0)
 
         self.main_login_btn.clicked.connect(self.go_login)
         self.main_sign_in_btn.clicked.connect(self.go_sign_in)
@@ -103,6 +130,11 @@ class WindowClass(QMainWindow, form_class):
         self.password1_edit.textChanged.connect(self.pw_changed)
         self.password2_edit.textChanged.connect(self.pw_changed)
 
+        self.tabWidget_2.currentChanged.connect(self.tab_changed)
+        self.tabWidget.currentChanged.connect(self.tab_changed)
+
+        # self.qna_stu_table.doubleClicked.connect(self.view_qna_detail)
+
         self.student_radio.clicked.connect(self.set_auth)
         self.teacher_radio.clicked.connect(self.set_auth)
 
@@ -111,6 +143,18 @@ class WindowClass(QMainWindow, form_class):
 
     def go_sign_in(self):
         self.stackedWidget.setCurrentIndex(2)
+
+    def tab_changed(self):
+        page1 = self.tabWidget_2.currentWidget()
+        page2 = self.tabWidget.currentWidget()
+        if page1 == self.tab_8 or page2 == self.tab_4:
+            print('tab_qna')
+            self.load_qna()
+
+    def load_qna(self):
+        self.qna_stu_table.setRowCount(0)
+        self.qna_tea_table.setRowCount(0)
+        self.thread.send_load_table()
 
     def login(self):
         input_id = self.login_id_edit.text()
@@ -164,7 +208,6 @@ class WindowClass(QMainWindow, form_class):
             self.auth = 's'
         elif self.teacher_radio.isChecked():
             self.auth = 't'
-
 
 
 if __name__ == "__main__":
