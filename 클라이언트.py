@@ -49,6 +49,30 @@ class Main(QMainWindow, form_class):
         self.bird_list.itemClicked.connect(self.show_bird_contents)
 
 
+        self.user_id = '이현도'
+        self.learning_complete_btn.clicked.connect(self.learning_complete)
+
+        self.teacher_learning_view()
+        self.student_learning_view()
+    def student_learning_view(self):
+        data = {'method': '009', 'user_id': self.user_id}
+        print(data)
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+
+    def teacher_learning_view(self):
+        data = {'method': '008'}
+        print(data)
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+    def learning_complete(self):
+        text = self.bird_list.selectedItems()
+        text = text[0].text()
+        data = {'method': '006', 'text': text, 'user_id': self.user_id}
+        print(data)
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+
     def show_bird_contents(self):
         text = self.bird_list.selectedItems()
         text = text[0].text()
@@ -93,21 +117,12 @@ class Main(QMainWindow, form_class):
         self.gnrlSpftrCont_brower.append(jsonObj['response']['body']['item']['gnrlSpftrCont'])
 
         img_url = jsonObj['response']['body']['item']['imgUrl']
-        # print(img_url)
-        # self.image_url_label.setStyleSheet(f"border-image:{img_url};")
-        # self.image_url_label.setStyleSheet("background-color: #87CEFA;")
 
         imageFromWeb = urllib.request.urlopen(img_url).read()
         qPixmapVar = QPixmap()
         qPixmapVar.loadFromData(imageFromWeb)
         qPixmapVar = qPixmapVar.scaled(self.image_url_label.width(), self.image_url_label.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.image_url_label.setPixmap(qPixmapVar)
-
-
-
-
-
-
 
 
     def show_bird_list(self):
@@ -233,8 +248,32 @@ class Main(QMainWindow, form_class):
                         self.score_table.setItem(i, 6, QTableWidgetItem(dic_data['text'][i][6]))
                         self.score_table.setItem(i, 7, QTableWidgetItem(dic_data['text'][i][7]))
                         self.score_table.setItem(i, 8, QTableWidgetItem(str(dic_data['text'][i][8])))
-                    # for x in dic_data['text']:
-                    #     print(x)
+                elif dic_data['method'] == '006':
+                    print(dic_data)
+                    if dic_data['text'] == 0:
+                        text = self.bird_list.selectedItems()
+                        text = text[0].text()
+                        data = {'method': '007', 'text': text, 'user_id': self.user_id}
+                        print(data)
+                        json_data = json.dumps(data)
+                        self.client_socket.sendall(json_data.encode())
+                        self.learning_complete_label.setText("\'" + text + "\' 학습 완료")
+                    else:
+                        text = self.bird_list.selectedItems()
+                        text = text[0].text()
+                        self.learning_complete_label.setText("\'" + text + "\' 학습 완료 상태입니다.")
+                elif dic_data['method'] == '008':
+                    self.teacher_learning_list.clear()
+                    text = dic_data['text']
+                    for x in text:
+                        self.teacher_learning_list.addItem(str(x[0])+": "+str(x[1]))
+                elif dic_data['method'] == '009':
+                    self.student_learning_list.clear()
+                    text = dic_data['text']
+                    for x in text:
+                        self.student_learning_list.addItem(str(x[1]))
+
+
         so.close()
 
 

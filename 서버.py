@@ -114,6 +114,65 @@ class MultiChatServer:
                     for client in self.clients:  # 목록에 있는 모든 소켓에 대해
                         socket, (ip, port) = client
                         socket.sendall(json_data.encode())
+                elif dic_data['method'] == '006':
+                    print("a")
+                    ###################################################### Data base 접속 start
+                    con = pymysql.connect(host=host_str, user=user_str, password=password_str, db='eduapp', charset='utf8')
+                    with con:
+                        with con.cursor() as cur:
+                            sql = f"SELECT * FROM study where title = '{dic_data['text']}' and user_id = '{dic_data['user_id']}';"
+                            cur.execute(sql)
+                            rows = cur.fetchall()
+                    ###################################################### Data base 접속 end
+                    print(len(rows))
+                    data = {'method': '006', 'text': len(rows)}
+                    json_data = json.dumps(data)
+                    for client in self.clients:  # 목록에 있는 모든 소켓에 대해
+                        socket, (ip, port) = client
+                        socket.sendall(json_data.encode())
+
+                elif dic_data['method'] == '007':
+                    ###################################################### Data base 접속 start
+                    con = pymysql.connect(host=host_str, user=user_str, password=password_str, db='eduapp', charset='utf8')
+                    with con:
+                        with con.cursor() as cur:
+                            sql = f"INSERT INTO study values('{dic_data['user_id']}','{dic_data['text']}')"
+                            cur.execute(sql)
+                            con.commit()
+                    ###################################################### Data base 접속 end
+
+                elif dic_data['method'] == '008':
+                    ###################################################### Data base 접속 start
+                    con = pymysql.connect(host=host_str, user=user_str, password=password_str, db='eduapp',
+                                          charset='utf8')
+                    with con:
+                        with con.cursor() as cur:
+                            sql = f"SELECT * FROM study"
+                            cur.execute(sql)
+                            rows = cur.fetchall()
+                    ###################################################### Data base 접속 end
+                    data = {'method': '008', 'text': rows}
+                    json_data = json.dumps(data)
+                    for client in self.clients:  # 목록에 있는 모든 소켓에 대해
+                        socket, (ip, port) = client
+                        socket.sendall(json_data.encode())
+
+                elif dic_data['method'] == '009':
+                    ###################################################### Data base 접속 start
+                    con = pymysql.connect(host=host_str, user=user_str, password=password_str, db='eduapp', charset='utf8')
+                    with con:
+                        with con.cursor() as cur:
+                            sql = f"SELECT * FROM study where user_id = '{dic_data['user_id']}'"
+                            cur.execute(sql)
+                            rows = cur.fetchall()
+                    ###################################################### Data base 접속 end
+                    data = {'method': '009', 'text': rows}
+                    json_data = json.dumps(data)
+                    for client in self.clients:  # 목록에 있는 모든 소켓에 대해
+                        socket, (ip, port) = client
+                        socket.sendall(json_data.encode())
+
+
 
 
 
@@ -125,4 +184,4 @@ if __name__ == "__main__":
   Multi_server = MultiChatServer()
   HOST, PORT = "10.10.21.112", 55000
   with ThreadedTCPServer((HOST, PORT), MyTCPHandler) as server:
-    server.serve_forever()
+      server.serve_forever()
