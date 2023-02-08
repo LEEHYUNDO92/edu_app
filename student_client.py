@@ -130,7 +130,16 @@ class ThreadClass:
             if dic_data['method'] == 'delete_question_result':
                 print('recv:', dic_data['method'])
                 print('result:', dic_data['result'])
-                self.form.stack_stu_qna.setCurrentWidget(self.form.stack_stu_qna_list)
+                if self.form.login_user.auth == 's':
+                    self.form.stack_stu_qna.setCurrentWidget(self.form.stack_stu_qna_list)
+                else:
+                    self.form.stack_tea_qna.setCurrentWidget(self.form.stack_tea_qna_list)
+                self.form.load_qna()
+
+            if dic_data['method'] == 'answer_result':
+                print('recv:', dic_data['method'])
+                print('result:', dic_data['result'])
+                self.form.stack_tea_qna.setCurrentWidget(self.form.stack_tea_qna_list)
                 self.form.load_qna()
 
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
@@ -178,6 +187,12 @@ class ThreadClass:
 
     def send_delete_question(self, qna_num):
         data = {"method": 'delete_question', "qna_num": qna_num}
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
+
+    def send_answer(self, qna_num, member_num, answer):
+        data = {"method": 'answer', "qna_num": qna_num, "member_num": member_num, "answer": answer}
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
         print('send:', data['method'])
@@ -230,7 +245,10 @@ class WindowClass(QMainWindow, form_class):
 
         self.btn_stu_detail_edit.clicked.connect(self.edit_question)
 
+        self.btn_tea_answer_save.clicked.connect(self.answer)
+
         self.btn_stu_detail_delete.clicked.connect(self.delete_question)
+        self.btn_tea_qna_delete.clicked.connect(self.delete_question)
 
     def go_login(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -354,9 +372,22 @@ class WindowClass(QMainWindow, form_class):
             self.thread.send_edit_question(qna_num, title, content, edit_time)
 
     def delete_question(self):
+        if self.login_user.auth == 's':
+            qna_num = self.label_stu_qna_num.text()
+        else:
+            qna_num = self.label_tea_qna_num.text()
         answer = QMessageBox.question(self, '확인', '해당 문의를 삭제하시겠습니까?')
         if answer == QMessageBox.Yes:
-            self.thread.send_delete_question(self.label_stu_qna_num.text())
+            self.thread.send_delete_question(qna_num)
+
+    def answer(self):
+        qna_num = self.label_tea_qna_num.text()
+        member_num = self.login_user.num
+        answer = self.text_tea_qna_answer.toPlainText()
+        if len(self.text_tea_qna_answer.toPlainText()) == 0:
+            QMessageBox.warning(self, '경고', '내용을 확인해주세요')
+        else:
+            self.thread.send_answer(qna_num, member_num, answer)
 
 
 if __name__ == "__main__":

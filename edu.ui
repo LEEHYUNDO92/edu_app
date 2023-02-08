@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="stack_main">
     <widget class="QPushButton" name="btn_main_to_sign_in">
@@ -84,7 +84,7 @@
          </font>
         </property>
         <property name="text">
-         <string>이현도</string>
+         <string>이상복</string>
         </property>
        </widget>
       </item>
