@@ -112,6 +112,42 @@ def threaded(client_socket, addr):
                         dic_data['method'] = 'add_question_result'
                         dic_data['result'] = True
 
+            if dic_data['method'] == 'edit_question':
+                print(dic_data['method'], dic_data['qna_num'])
+                sql = f"SELECT title, content FROM qna WHERE num = {dic_data['qna_num']}"
+                print(sql)
+                with conn_fetch() as cur:
+                    cur.execute(sql)
+                    result = cur.fetchall()
+
+                if result[0][0] == dic_data['title'] and result[0][1] == dic_data['content']:
+                    dic_data['method'] = 'edit_question_result'
+                    dic_data['result'] = False
+
+                else:
+                    title = dic_data['title']
+                    content = dic_data['content']
+                    edit_time = dic_data['edit_time']
+                    sql = f"UPDATE qna SET title = '{title}', content = '{content}', edit_time = '{edit_time}' " \
+                          f"WHERE num = {dic_data['qna_num']}"
+                    print(sql)
+                    with conn_commit() as con:
+                        with con.cursor() as cur:
+                            cur.execute(sql)
+                            con.commit()
+                            dic_data['method'] = 'edit_question_result'
+                            dic_data['result'] = True
+
+            if dic_data['method'] == 'delete_question':
+                sql = f"DELETE FROM qna WHERE num = {dic_data['qna_num']}"
+                print(sql)
+                with conn_commit() as con:
+                    with con.cursor() as cur:
+                        cur.execute(sql)
+                        con.commit()
+                        dic_data['method'] = 'delete_question_result'
+                        dic_data['result'] = True
+
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':
                 send_everyone(client_sockets, dic_data)

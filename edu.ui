@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="stack_main">
     <widget class="QPushButton" name="btn_main_to_sign_in">
@@ -684,7 +684,7 @@
           </rect>
          </property>
         </widget>
-        <widget class="QLineEdit" name="label_tea_qna_title">
+        <widget class="QLineEdit" name="text_tea_qna_title">
          <property name="geometry">
           <rect>
            <x>100</x>
@@ -764,9 +764,9 @@
         <widget class="QLabel" name="label_tea_qna_add_time">
          <property name="geometry">
           <rect>
-           <x>400</x>
+           <x>390</x>
            <y>50</y>
-           <width>100</width>
+           <width>110</width>
            <height>20</height>
           </rect>
          </property>
@@ -780,9 +780,9 @@
         <widget class="QLabel" name="label_tea_qna_edit_time">
          <property name="geometry">
           <rect>
-           <x>400</x>
+           <x>390</x>
            <y>70</y>
-           <width>100</width>
+           <width>110</width>
            <height>20</height>
           </rect>
          </property>
@@ -796,7 +796,7 @@
         <widget class="QLabel" name="label_30">
          <property name="geometry">
           <rect>
-           <x>360</x>
+           <x>350</x>
            <y>50</y>
            <width>40</width>
            <height>20</height>
@@ -812,7 +812,7 @@
         <widget class="QLabel" name="label_31">
          <property name="geometry">
           <rect>
-           <x>360</x>
+           <x>350</x>
            <y>70</y>
            <width>40</width>
            <height>20</height>
@@ -854,7 +854,7 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QPlainTextEdit" name="text_tea_qna_answer">
+        <widget class="QTextEdit" name="text_tea_qna_answer">
          <property name="geometry">
           <rect>
            <x>100</x>
@@ -949,6 +949,19 @@
          </property>
          <property name="text">
           <string>삭제</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_tea_qna_num">
+         <property name="geometry">
+          <rect>
+           <x>480</x>
+           <y>20</y>
+           <width>56</width>
+           <height>12</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </widget>
@@ -1362,9 +1375,6 @@
            <height>200</height>
           </rect>
          </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
         </widget>
         <widget class="QLineEdit" name="text_stu_qna_title">
          <property name="geometry">
@@ -1377,9 +1387,6 @@
          </property>
          <property name="text">
           <string/>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
          </property>
         </widget>
         <widget class="QLabel" name="label_33">
@@ -1610,6 +1617,19 @@
            <string>수정</string>
           </property>
          </widget>
+        </widget>
+        <widget class="QLabel" name="label_stu_qna_num">
+         <property name="geometry">
+          <rect>
+           <x>470</x>
+           <y>20</y>
+           <width>56</width>
+           <height>12</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="stack_stu_add_question">

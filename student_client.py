@@ -85,25 +85,21 @@ class ThreadClass:
                 if self.form.login_user.auth == 's':
 
                     if self.form.login_user.num == dic_data['result'][1]:
-                        print(True)
-                        self.form.text_stu_qna_title.setReadOnly(False)
-                        self.form.text_stu_qna_content.setReadOnly(False)
+                        self.form.isSameUser = True
                     else:
-                        print(False)
-                        self.form.text_stu_qna_title.setReadOnly(True)
-                        self.form.text_stu_qna_content.setReadOnly(True)
+                        self.form.isSameUser = False
 
                     data_list = [self.form.text_stu_qna_title, self.form.text_stu_qna_content,
                                  self.form.label_stu_qna_stu_name, self.form.label_stu_qna_stu_id,
                                  self.form.label_stu_qna_add_time, self.form.label_stu_qna_edit_time,
                                  self.form.label_stu_qna_tea_name, self.form.label_stu_qna_tea_id,
-                                 self.form.text_stu_qna_answer]
+                                 self.form.text_stu_qna_answer, self.form.label_stu_qna_num]
                 else:
                     data_list = [self.form.text_tea_qna_title, self.form.text_tea_qna_content,
                                  self.form.label_tea_qna_stu_name, self.form.label_tea_qna_stu_id,
                                  self.form.label_tea_qna_add_time, self.form.label_tea_qna_edit_time,
                                  self.form.label_tea_qna_tea_name, self.form.label_tea_qna_tea_id,
-                                 self.form.text_tea_qna_answer]
+                                 self.form.text_tea_qna_answer, self.form.label_tea_qna_num]
 
                 data_list[0].setText(dic_data['result'][4])
                 data_list[1].append(dic_data['result'][5])
@@ -117,8 +113,21 @@ class ThreadClass:
                 else:
                     data_list[7].clear()
                 data_list[8].append(dic_data['result'][8])
+                data_list[9].setText(str(dic_data['result'][0]))
 
             if dic_data['method'] == 'add_question_result':
+                print('recv:', dic_data['method'])
+                print('result:', dic_data['result'])
+                self.form.stack_stu_qna.setCurrentWidget(self.form.stack_stu_qna_list)
+                self.form.load_qna()
+
+            if dic_data['method'] == 'edit_question_result':
+                print('recv:', dic_data['method'])
+                print('result:', dic_data['result'])
+                self.form.stack_stu_qna.setCurrentWidget(self.form.stack_stu_qna_list)
+                self.form.load_qna()
+
+            if dic_data['method'] == 'delete_question_result':
                 print('recv:', dic_data['method'])
                 print('result:', dic_data['result'])
                 self.form.stack_stu_qna.setCurrentWidget(self.form.stack_stu_qna_list)
@@ -161,12 +170,26 @@ class ThreadClass:
         self.client_socket.sendall(json_data.encode())
         print('send:', data['method'])
 
+    def send_edit_question(self, qna_num, title, content, edit_time):
+        data = {"method": 'edit_question', "qna_num": qna_num, "title": title, "content": content, "edit_time": edit_time}
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
+
+    def send_delete_question(self, qna_num):
+        data = {"method": 'delete_question', "qna_num": qna_num}
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
+
 
 class WindowClass(QMainWindow, form_class):
     login_user = None
     isIDChecked = False
     isPWRuleChecked = False
     isPWSameChecked = False
+    isSameUser = False
+    isEdit = False
     auth = None
 
     def __init__(self):
@@ -179,18 +202,23 @@ class WindowClass(QMainWindow, form_class):
         self.tab_teacher.setCurrentIndex(0)
         self.stack_stu_qna.setCurrentIndex(0)
         self.stack_tea_qna.setCurrentIndex(0)
+        self.label_stu_qna_num.setVisible(False)
+        self.label_tea_qna_num.setVisible(False)
 
         self.btn_main_to_login.clicked.connect(self.go_login)
         self.btn_main_to_sign_in.clicked.connect(self.go_sign_in)
+
         self.btn_stu_list_to_add.clicked.connect(self.go_add_question)
 
         self.btn_login.clicked.connect(self.login)
-        self.btn_sign_in.clicked.connect(self.sign_in)
 
+        self.btn_sign_in.clicked.connect(self.sign_in)
         self.btn_id_check.clicked.connect(self.check_id)
         self.input_sign_in_id.textChanged.connect(self.id_changed)
         self.input_sign_in_pw.textChanged.connect(self.pw_changed)
         self.input_sign_in_pw_ck.textChanged.connect(self.pw_changed)
+        self.radio_sign_in_student.clicked.connect(self.set_auth)
+        self.radio_sign_in_teacher.clicked.connect(self.set_auth)
 
         self.tab_student.currentChanged.connect(self.tab_changed)
         self.tab_teacher.currentChanged.connect(self.tab_changed)
@@ -198,12 +226,11 @@ class WindowClass(QMainWindow, form_class):
         self.table_stu_qna.doubleClicked.connect(self.view_qna_detail)
         self.table_tea_qna.doubleClicked.connect(self.view_qna_detail)
 
-        self.radio_sign_in_student.clicked.connect(self.set_auth)
-        self.radio_sign_in_teacher.clicked.connect(self.set_auth)
-
         self.btn_stu_qna_add.clicked.connect(self.add_question)
 
         self.btn_stu_detail_edit.clicked.connect(self.edit_question)
+
+        self.btn_stu_detail_delete.clicked.connect(self.delete_question)
 
     def go_login(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -233,13 +260,22 @@ class WindowClass(QMainWindow, form_class):
         self.text_stu_qna_content.clear()
         self.text_tea_qna_content.clear()
         self.text_tea_qna_answer.clear()
+
         sender = self.sender()
-        print(sender == self.table_stu_qna)
         row = sender.currentIndex().row()
-        print(row)
         sel_data = sender.item(row, 0).text()
-        print(sel_data)
         self.thread.send_qna_detail(sel_data)
+        time.sleep(0.05)
+
+        if self.isSameUser:
+            self.text_stu_qna_title.setReadOnly(False)
+            self.text_stu_qna_content.setReadOnly(False)
+            self.group_stu_qna_editable.setVisible(True)
+        else:
+            self.text_stu_qna_title.setReadOnly(True)
+            self.text_stu_qna_content.setReadOnly(True)
+            self.group_stu_qna_editable.setVisible(False)
+
         self.stack_stu_qna.setCurrentWidget(self.stack_stu_qna_detail)
         self.stack_tea_qna.setCurrentWidget(self.stack_tea_qna_detail)
 
@@ -307,14 +343,20 @@ class WindowClass(QMainWindow, form_class):
             self.thread.send_add_question(self.login_user.num, title, content, add_time)
 
     def edit_question(self):
-        title = self.input_stu_qna_title.text()
-        content = self.input_stu_qna_content.toPlainText()
-        add_time = datetime.now().strftime('%F %T')
-        print(add_time)
+        qna_num = self.label_stu_qna_num.text()
+        title = self.text_stu_qna_title.text()
+        content = self.text_stu_qna_content.toPlainText()
+        edit_time = datetime.now().strftime('%F %T')
+        print(edit_time)
         if 0 in [len(title), len(content)]:
             QMessageBox.warning(self, '경고', '제목 또는 내용을 확인해주세요')
         else:
-            self.thread.send_add_question(self.login_user.num, title, content, add_time)
+            self.thread.send_edit_question(qna_num, title, content, edit_time)
+
+    def delete_question(self):
+        answer = QMessageBox.question(self, '확인', '해당 문의를 삭제하시겠습니까?')
+        if answer == QMessageBox.Yes:
+            self.thread.send_delete_question(self.label_stu_qna_num.text())
 
 
 if __name__ == "__main__":
