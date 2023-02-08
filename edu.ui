@@ -420,7 +420,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -619,11 +619,11 @@
        <string>부족한part</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tab_4">
+     <widget class="QWidget" name="tab_tea_qna">
       <attribute name="title">
        <string>QnA</string>
       </attribute>
-      <widget class="QStackedWidget" name="tea_qna_stack">
+      <widget class="QStackedWidget" name="stack_tea_qna">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -635,8 +635,8 @@
        <property name="currentIndex">
         <number>1</number>
        </property>
-       <widget class="QWidget" name="page_11">
-        <widget class="QTableWidget" name="qna_tea_table">
+       <widget class="QWidget" name="stack_tea_qna_list">
+        <widget class="QTableWidget" name="table_tea_qna">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -673,7 +673,7 @@
          </column>
         </widget>
        </widget>
-       <widget class="QWidget" name="page_8">
+       <widget class="QWidget" name="stack_tea_qna_detail">
         <widget class="QTextBrowser" name="browser_tea_qna_content">
          <property name="geometry">
           <rect>
@@ -736,7 +736,7 @@
          <property name="geometry">
           <rect>
            <x>100</x>
-           <y>50</y>
+           <y>60</y>
            <width>60</width>
            <height>20</height>
           </rect>
@@ -744,12 +744,15 @@
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
         <widget class="QLabel" name="label_tea_qna_stu_id">
          <property name="geometry">
           <rect>
            <x>170</x>
-           <y>50</y>
+           <y>60</y>
            <width>100</width>
            <height>20</height>
           </rect>
@@ -820,6 +823,106 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_tea_detail_to_list">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>뒤로가기</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_38">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>60</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>작성자</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QTextBrowser" name="browser_tea_qna_answer">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>380</y>
+           <width>400</width>
+           <height>200</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_tea_qna_tea_name">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>350</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_43">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>380</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>답변 내용</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_42">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>350</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>작성자</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_tea_qna_tea_id">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>350</y>
+           <width>100</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </widget>
@@ -911,7 +1014,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_6">
       <attribute name="title">
@@ -1128,7 +1231,7 @@
       <attribute name="title">
        <string>QnA</string>
       </attribute>
-      <widget class="QStackedWidget" name="stackedWidget_2">
+      <widget class="QStackedWidget" name="stack_stu_qna">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -1138,10 +1241,10 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
-       <widget class="QWidget" name="page_10">
-        <widget class="QTableWidget" name="qna_stu_table">
+       <widget class="QWidget" name="stack_stu_qna_list">
+        <widget class="QTableWidget" name="table_stu_qna">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1178,12 +1281,12 @@
          </column>
         </widget>
        </widget>
-       <widget class="QWidget" name="page_6">
+       <widget class="QWidget" name="stack_stu_qna_detail">
         <widget class="QLabel" name="label_32">
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>70</y>
+           <y>90</y>
            <width>60</width>
            <height>20</height>
           </rect>
@@ -1199,7 +1302,7 @@
          <property name="geometry">
           <rect>
            <x>390</x>
-           <y>50</y>
+           <y>70</y>
            <width>100</width>
            <height>20</height>
           </rect>
@@ -1215,7 +1318,7 @@
          <property name="geometry">
           <rect>
            <x>90</x>
-           <y>100</y>
+           <y>120</y>
            <width>400</width>
            <height>200</height>
           </rect>
@@ -1225,7 +1328,7 @@
          <property name="geometry">
           <rect>
            <x>90</x>
-           <y>70</y>
+           <y>90</y>
            <width>400</width>
            <height>20</height>
           </rect>
@@ -1241,7 +1344,7 @@
          <property name="geometry">
           <rect>
            <x>350</x>
-           <y>50</y>
+           <y>70</y>
            <width>40</width>
            <height>20</height>
           </rect>
@@ -1257,7 +1360,7 @@
          <property name="geometry">
           <rect>
            <x>160</x>
-           <y>30</y>
+           <y>60</y>
            <width>100</width>
            <height>20</height>
           </rect>
@@ -1270,7 +1373,7 @@
          <property name="geometry">
           <rect>
            <x>90</x>
-           <y>30</y>
+           <y>60</y>
            <width>60</width>
            <height>20</height>
           </rect>
@@ -1278,12 +1381,15 @@
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
         <widget class="QLabel" name="label_34">
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>100</y>
+           <y>120</y>
            <width>60</width>
            <height>20</height>
           </rect>
@@ -1299,7 +1405,7 @@
          <property name="geometry">
           <rect>
            <x>350</x>
-           <y>30</y>
+           <y>50</y>
            <width>40</width>
            <height>20</height>
           </rect>
@@ -1315,8 +1421,108 @@
          <property name="geometry">
           <rect>
            <x>390</x>
-           <y>30</y>
+           <y>50</y>
            <width>100</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_stu_detail_to_list">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>뒤로가기</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_37">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>60</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>작성자</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QTextBrowser" name="browser_stu_qna_answer">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>380</y>
+           <width>400</width>
+           <height>200</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_39">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>380</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>답변 내용</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_41">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>350</y>
+           <width>60</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>작성자</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_stu_qna_tea_id">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>350</y>
+           <width>100</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_stu_qna_tea_name">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>350</y>
+           <width>60</width>
            <height>20</height>
           </rect>
          </property>

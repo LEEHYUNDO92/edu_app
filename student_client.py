@@ -65,9 +65,9 @@ class ThreadClass:
                 print('recv_data:', dic_data['data'])
                 row_num = dic_data['data'][0] - 1
                 if self.form.login_user.auth == 's':
-                    qna_table = self.form.qna_stu_table
+                    qna_table = self.form.table_stu_qna
                 else:
-                    qna_table = self.form.qna_tea_table
+                    qna_table = self.form.table_tea_qna
                 qna_table.insertRow(row_num)
                 print(qna_table.rowCount())
                 qna_table.setItem(row_num, 0, QTableWidgetItem(str(dic_data['data'][0])))
@@ -85,14 +85,28 @@ class ThreadClass:
                     self.form.label_stu_qna_title.setText(dic_data['result'][3])
                     self.form.browser_stu_qna_content.append(dic_data['result'][4])
                     self.form.label_stu_qna_stu_name.setText(dic_data['result'][2])
-                    self.form.label_stu_qna_stu_id.setText(dic_data['result'][1])
+                    self.form.label_stu_qna_stu_id.setText("("+dic_data['result'][1]+")")
                     self.form.label_stu_qna_add_time.setText(dic_data['result'][8])
+                    self.form.label_stu_qna_edit_time.setText(dic_data['result'][9])
+                    self.form.label_stu_qna_tea_name.setText(dic_data['result'][6])
+                    if dic_data['result'][5] is not None:
+                        self.form.label_stu_qna_tea_id.setText("("+dic_data['result'][5]+")")
+                    else:
+                        self.form.label_stu_qna_tea_id.clear()
+                    self.form.browser_stu_qna_answer.append(dic_data['result'][7])
                 else:
                     self.form.label_tea_qna_title.setText(dic_data['result'][3])
                     self.form.browser_tea_qna_content.append(dic_data['result'][4])
                     self.form.label_tea_qna_stu_name.setText(dic_data['result'][2])
-                    self.form.label_tea_qna_stu_id.setText(dic_data['result'][1])
+                    self.form.label_tea_qna_stu_id.setText("("+dic_data['result'][1]+")")
                     self.form.label_tea_qna_add_time.setText(dic_data['result'][8])
+                    self.form.label_tea_qna_edit_time.setText(dic_data['result'][9])
+                    self.form.label_tea_qna_tea_name.setText(dic_data['result'][6])
+                    if dic_data['result'][5] is not None:
+                        self.form.label_tea_qna_tea_id.setText("("+dic_data['result'][5]+")")
+                    else:
+                        self.form.label_tea_qna_tea_id.clear()
+                    self.form.browser_tea_qna_answer.append(dic_data['result'][7])
 
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
     def send_check_id(self, input_id):
@@ -140,6 +154,9 @@ class WindowClass(QMainWindow, form_class):
 
         self.stackedWidget.setCurrentIndex(0)
         self.tab_student.setCurrentIndex(0)
+        self.tab_teacher.setCurrentIndex(0)
+        self.stack_stu_qna.setCurrentIndex(0)
+        self.stack_tea_qna.setCurrentIndex(0)
 
         self.btn_main_to_login.clicked.connect(self.go_login)
         self.btn_main_to_sign_in.clicked.connect(self.go_sign_in)
@@ -154,7 +171,8 @@ class WindowClass(QMainWindow, form_class):
         self.tab_student.currentChanged.connect(self.tab_changed)
         self.tab_teacher.currentChanged.connect(self.tab_changed)
 
-        self.qna_stu_table.doubleClicked.connect(self.view_qna_detail)
+        self.table_stu_qna.doubleClicked.connect(self.view_qna_detail)
+        self.table_tea_qna.doubleClicked.connect(self.view_qna_detail)
 
         self.radio_sign_in_student.clicked.connect(self.set_auth)
         self.radio_sign_in_teacher.clicked.connect(self.set_auth)
@@ -166,6 +184,8 @@ class WindowClass(QMainWindow, form_class):
         self.stackedWidget.setCurrentIndex(2)
 
     def tab_changed(self):
+        self.stack_stu_qna.setCurrentWidget(self.stack_stu_qna_list)
+        self.stack_tea_qna.setCurrentWidget(self.stack_tea_qna_list)
         tab_student = self.tab_student.currentWidget()
         tab_teacher = self.tab_teacher.currentWidget()
         if tab_student == self.tab_stu_qna or tab_teacher == self.tab_tea_qna:
@@ -173,19 +193,24 @@ class WindowClass(QMainWindow, form_class):
             self.load_qna()
 
     def load_qna(self):
-        self.qna_stu_table.setRowCount(0)
-        self.qna_tea_table.setRowCount(0)
+        self.table_stu_qna.setRowCount(0)
+        self.table_tea_qna.setRowCount(0)
         self.thread.send_load_table()
 
     def view_qna_detail(self):
+        self.browser_stu_qna_content.clear()
+        self.browser_tea_qna_content.clear()
+        self.browser_stu_qna_answer.clear()
+        self.browser_tea_qna_answer.clear()
         sender = self.sender()
-        print(sender == self.qna_stu_table)
+        print(sender == self.table_stu_qna)
         row = sender.currentIndex().row()
         print(row)
         sel_data = sender.item(row, 0).text()
         print(sel_data)
         self.thread.send_qna_detail(sel_data)
         self.stack_stu_qna.setCurrentWidget(self.stack_stu_qna_detail)
+        self.stack_tea_qna.setCurrentWidget(self.stack_tea_qna_detail)
 
     def login(self):
         input_id = self.input_login_id.text()
