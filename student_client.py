@@ -63,7 +63,7 @@ class ThreadClass:
             if dic_data['method'] == 'load_table_result':
                 print('recv:', dic_data['method'])
                 print('recv_data:', dic_data['data'])
-                row_num = dic_data['data'][0] - 1
+                row_num = dic_data['index']
                 if self.form.login_user.auth == 's':
                     qna_table = self.form.table_stu_qna
                 else:
@@ -81,63 +81,85 @@ class ThreadClass:
             if dic_data['method'] == 'qna_detail_result':
                 print('recv:', dic_data['method'])
                 print('result:', dic_data['result'])
+
                 if self.form.login_user.auth == 's':
-                    self.form.label_stu_qna_title.setText(dic_data['result'][3])
-                    self.form.browser_stu_qna_content.append(dic_data['result'][4])
-                    self.form.label_stu_qna_stu_name.setText(dic_data['result'][2])
-                    self.form.label_stu_qna_stu_id.setText("("+dic_data['result'][1]+")")
-                    self.form.label_stu_qna_add_time.setText(dic_data['result'][8])
-                    self.form.label_stu_qna_edit_time.setText(dic_data['result'][9])
-                    self.form.label_stu_qna_tea_name.setText(dic_data['result'][6])
-                    if dic_data['result'][5] is not None:
-                        self.form.label_stu_qna_tea_id.setText("("+dic_data['result'][5]+")")
+
+                    if self.form.login_user.num == dic_data['result'][1]:
+                        print(True)
+                        self.form.text_stu_qna_title.setReadOnly(False)
+                        self.form.text_stu_qna_content.setReadOnly(False)
                     else:
-                        self.form.label_stu_qna_tea_id.clear()
-                    self.form.browser_stu_qna_answer.append(dic_data['result'][7])
+                        print(False)
+                        self.form.text_stu_qna_title.setReadOnly(True)
+                        self.form.text_stu_qna_content.setReadOnly(True)
+
+                    data_list = [self.form.text_stu_qna_title, self.form.text_stu_qna_content,
+                                 self.form.label_stu_qna_stu_name, self.form.label_stu_qna_stu_id,
+                                 self.form.label_stu_qna_add_time, self.form.label_stu_qna_edit_time,
+                                 self.form.label_stu_qna_tea_name, self.form.label_stu_qna_tea_id,
+                                 self.form.text_stu_qna_answer]
                 else:
-                    self.form.label_tea_qna_title.setText(dic_data['result'][3])
-                    self.form.browser_tea_qna_content.append(dic_data['result'][4])
-                    self.form.label_tea_qna_stu_name.setText(dic_data['result'][2])
-                    self.form.label_tea_qna_stu_id.setText("("+dic_data['result'][1]+")")
-                    self.form.label_tea_qna_add_time.setText(dic_data['result'][8])
-                    self.form.label_tea_qna_edit_time.setText(dic_data['result'][9])
-                    self.form.label_tea_qna_tea_name.setText(dic_data['result'][6])
-                    if dic_data['result'][5] is not None:
-                        self.form.label_tea_qna_tea_id.setText("("+dic_data['result'][5]+")")
-                    else:
-                        self.form.label_tea_qna_tea_id.clear()
-                    self.form.browser_tea_qna_answer.append(dic_data['result'][7])
+                    data_list = [self.form.text_tea_qna_title, self.form.text_tea_qna_content,
+                                 self.form.label_tea_qna_stu_name, self.form.label_tea_qna_stu_id,
+                                 self.form.label_tea_qna_add_time, self.form.label_tea_qna_edit_time,
+                                 self.form.label_tea_qna_tea_name, self.form.label_tea_qna_tea_id,
+                                 self.form.text_tea_qna_answer]
+
+                data_list[0].setText(dic_data['result'][4])
+                data_list[1].append(dic_data['result'][5])
+                data_list[2].setText(dic_data['result'][3])
+                data_list[3].setText("("+dic_data['result'][2]+")")
+                data_list[4].setText(dic_data['result'][9])
+                data_list[5].setText(dic_data['result'][10])
+                data_list[6].setText(dic_data['result'][7])
+                if dic_data['result'][6] is not None:
+                    data_list[7].setText("("+dic_data['result'][6]+")")
+                else:
+                    data_list[7].clear()
+                data_list[8].append(dic_data['result'][8])
+
+            if dic_data['method'] == 'add_question_result':
+                print('recv:', dic_data['method'])
+                print('result:', dic_data['result'])
+                self.form.stack_stu_qna.setCurrentWidget(self.form.stack_stu_qna_list)
+                self.form.load_qna()
 
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
     def send_check_id(self, input_id):
         data = {"method": 'check_id', "input_id": input_id, "result": bool()}
-        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
 
     def send_login(self, uid, upw):
         data = {"method": 'login', "uid": uid, "upw": upw}
-        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
 
     def send_registration(self, uid, upw, uname, auth):
         data = {"method": 'registration', "uid": uid, "upw": upw, "uname": uname, "auth": auth}
-        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
 
-    def send_load_table(self):
-        data = {"method": 'load_table', "member_num": self.form.login_user.num}
-        print('send:', data['method'])
+    def send_load_table(self, member_num):
+        data = {"method": 'load_table', "member_num": member_num}
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
 
     def send_qna_detail(self, qna_num):
         data = {"method": 'qna_detail', "qna_num": qna_num}
-        print('send:', data['method'])
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
+
+    def send_add_question(self, num, title, content, add_time):
+        data = {"method": 'add_question', "member_num": num, "title": title, "content": content, "add_time": add_time}
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
 
 
 class WindowClass(QMainWindow, form_class):
@@ -160,6 +182,8 @@ class WindowClass(QMainWindow, form_class):
 
         self.btn_main_to_login.clicked.connect(self.go_login)
         self.btn_main_to_sign_in.clicked.connect(self.go_sign_in)
+        self.btn_stu_list_to_add.clicked.connect(self.go_add_question)
+
         self.btn_login.clicked.connect(self.login)
         self.btn_sign_in.clicked.connect(self.sign_in)
 
@@ -177,11 +201,18 @@ class WindowClass(QMainWindow, form_class):
         self.radio_sign_in_student.clicked.connect(self.set_auth)
         self.radio_sign_in_teacher.clicked.connect(self.set_auth)
 
+        self.btn_stu_qna_add.clicked.connect(self.add_question)
+
+        self.btn_stu_detail_edit.clicked.connect(self.edit_question)
+
     def go_login(self):
         self.stackedWidget.setCurrentIndex(1)
 
     def go_sign_in(self):
         self.stackedWidget.setCurrentIndex(2)
+
+    def go_add_question(self):
+        self.stack_stu_qna.setCurrentWidget(self.stack_stu_add_question)
 
     def tab_changed(self):
         self.stack_stu_qna.setCurrentWidget(self.stack_stu_qna_list)
@@ -195,13 +226,13 @@ class WindowClass(QMainWindow, form_class):
     def load_qna(self):
         self.table_stu_qna.setRowCount(0)
         self.table_tea_qna.setRowCount(0)
-        self.thread.send_load_table()
+        self.thread.send_load_table(self.login_user.num)
 
     def view_qna_detail(self):
-        self.browser_stu_qna_content.clear()
-        self.browser_tea_qna_content.clear()
-        self.browser_stu_qna_answer.clear()
-        self.browser_tea_qna_answer.clear()
+        self.text_stu_qna_answer.clear()
+        self.text_stu_qna_content.clear()
+        self.text_tea_qna_content.clear()
+        self.text_tea_qna_answer.clear()
         sender = self.sender()
         print(sender == self.table_stu_qna)
         row = sender.currentIndex().row()
@@ -264,6 +295,26 @@ class WindowClass(QMainWindow, form_class):
             self.auth = 's'
         elif self.radio_sign_in_teacher.isChecked():
             self.auth = 't'
+
+    def add_question(self):
+        title = self.input_stu_qna_title.text()
+        content = self.input_stu_qna_content.toPlainText()
+        add_time = datetime.now().strftime('%F %T')
+        print(add_time)
+        if 0 in [len(title), len(content)]:
+            QMessageBox.warning(self, '경고', '제목 또는 내용을 확인해주세요')
+        else:
+            self.thread.send_add_question(self.login_user.num, title, content, add_time)
+
+    def edit_question(self):
+        title = self.input_stu_qna_title.text()
+        content = self.input_stu_qna_content.toPlainText()
+        add_time = datetime.now().strftime('%F %T')
+        print(add_time)
+        if 0 in [len(title), len(content)]:
+            QMessageBox.warning(self, '경고', '제목 또는 내용을 확인해주세요')
+        else:
+            self.thread.send_add_question(self.login_user.num, title, content, add_time)
 
 
 if __name__ == "__main__":

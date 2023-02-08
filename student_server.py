@@ -87,7 +87,7 @@ def threaded(client_socket, addr):
             if dic_data['method'] == 'qna_detail':
                 print(dic_data['method'], dic_data['qna_num'])
                 # sql = f"SELECT * FROM qna WHERE num = {dic_data['qna_num']}"
-                sql = f"SELECT a.num, b.uid, b.uname, a.title, a.content, " \
+                sql = f"SELECT a.num, b.num, b.uid, b.uname, a.title, a.content, " \
                       f"c.uid, c.uname, a.answer, a.add_time, a.edit_time " \
                       f"FROM qna a " \
                       f"LEFT JOIN member b on a.student_num = b.num LEFT JOIN member c on a.teacher_num = c.num " \
@@ -99,6 +99,18 @@ def threaded(client_socket, addr):
                     print(result)
                     dic_data['method'] = 'qna_detail_result'
                     dic_data['result'] = result[0]
+
+            if dic_data['method'] == 'add_question':
+                print(dic_data['method'], dic_data['member_num'])
+                sql = f"INSERT INTO qna (student_num, title, content, add_time) VALUES " \
+                      f"({dic_data['member_num']}, '{dic_data['title']}', '{dic_data['content']}', '{dic_data['add_time']}')"
+                print(sql)
+                with conn_commit() as con:
+                    with con.cursor() as cur:
+                        cur.execute(sql)
+                        con.commit()
+                        dic_data['method'] = 'add_question_result'
+                        dic_data['result'] = True
 
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':
@@ -135,12 +147,15 @@ def send_big_data(client_sockets, dic_data):  # 테이블에 값이 많은 경�
     print('send:', dic_data['method'])
     result = dic_data['result']
     del dic_data['result']
-    for i in result:
+    count = 0
+    for i in range(len(result)):
         for client in client_sockets:
-            dic_data['data'] = i
+            dic_data['data'] = result[i]
+            dic_data['index'] = count
             json_data = json.dumps(dic_data)
             client.sendall(json_data.encode())
             time.sleep(0.05)
+            count += 1
 
 
 print('>> Server Start')
