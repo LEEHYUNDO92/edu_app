@@ -18,22 +18,11 @@ def conn_fetch():  # SELECT문 사용 시
     con = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='eduapp', charset='utf8')
     cur = con.cursor()
     return cur
-""" 사용 예시
-with conn_fetch() as cur:
-    cur.execute(sql)
-    result = cur.fetchall()
-"""
 
 
 def conn_commit():  # INSERT, UPDATE 등 값에 변화를 주는 SQL문 사용 시
     con = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='eduapp', charset='utf8')
     return con
-""" 사용 예시
-with conn_commit() as con:
-    with con.cursor() as cur:
-        cur.execute(sql)
-        con.commit()
-"""
 
 
 def threaded(client_socket, addr):
