@@ -142,6 +142,15 @@ class ThreadClass:
                 self.form.stack_tea_qna.setCurrentWidget(self.form.stack_tea_qna_list)
                 self.form.load_qna()
 
+            if dic_data['method'] == 'point_grade_result':
+                print('recv:', dic_data['method'])
+                print('point:', dic_data['point'])
+                print('max_point:', dic_data['max_point'])
+                self.form.label_stu_point.setText(str(dic_data['point']) + ' / ' + str(dic_data['max_point']))
+                self.form.label_stu_my_name.setText(self.form.login_user.uname)
+                grade_level = dic_data['max_point'] / 4
+
+
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
     def send_check_id(self, input_id):
         data = {"method": 'check_id', "input_id": input_id, "result": bool()}
@@ -193,6 +202,12 @@ class ThreadClass:
 
     def send_answer(self, qna_num, member_num, answer):
         data = {"method": 'answer', "qna_num": qna_num, "member_num": member_num, "answer": answer}
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
+
+    def send_point_grade(self, member_num):
+        data = {"method": 'point_grade', "member_num": member_num}
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
         print('send:', data['method'])
@@ -267,6 +282,9 @@ class WindowClass(QMainWindow, form_class):
         if tab_student == self.tab_stu_qna or tab_teacher == self.tab_tea_qna:
             print('tab_qna')
             self.load_qna()
+        if tab_student == self.tab_stu_point:
+            print('tab_point')
+            self.load_point()
 
     def load_qna(self):
         self.table_stu_qna.setRowCount(0)
@@ -388,6 +406,9 @@ class WindowClass(QMainWindow, form_class):
             QMessageBox.warning(self, '경고', '내용을 확인해주세요')
         else:
             self.thread.send_answer(qna_num, member_num, answer)
+
+    def load_point(self):
+        self.thread.send_point_grade(self.login_user.num)
 
 
 if __name__ == "__main__":
