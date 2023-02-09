@@ -144,11 +144,11 @@ class ThreadClass:
 
             if dic_data['method'] == 'point_grade_result':
                 print('recv:', dic_data['method'])
-                print('point:', dic_data['point'])
-                print('max_point:', dic_data['max_point'])
-                self.form.label_stu_point.setText(str(dic_data['point']) + ' / ' + str(dic_data['max_point']))
+                print('point:', dic_data['point'], 'grade:', dic_data['grade'])
+                # print('max_point:', dic_data['max_point'])
+                self.form.label_stu_point.setText(str(dic_data['point']))
                 self.form.label_stu_my_name.setText(self.form.login_user.uname)
-                grade_level = dic_data['max_point'] / 4
+                self.form.label_stu_grade.setText(dic_data['grade'])
 
 
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성

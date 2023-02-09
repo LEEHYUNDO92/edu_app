@@ -186,57 +186,14 @@ def threaded(client_socket, addr):
                             dic_data['result'] = True
 
             if dic_data['method'] == 'point_grade':
-                sql = f"SELECT * FROM quiz_result " \
-                      f"WHERE student_num = {dic_data['member_num']} " \
-                      f"ORDER BY topic, quiz_datetime"
-                print(sql)
+                sql = f"SELECT * FROM student WHERE student_num = {dic_data['member_num']}"
                 with conn_fetch() as cur:
                     cur.execute(sql)
-                    result = cur.fetchall()
-                    dic_data['method'] = 'point_grade_result'
+                    result = cur.fetchall()[0]
                     print(result)
-
-                dic_data['point'] = 0
-                all_question = 0
-                temp_topic = ''
-                t1, t2, t3, t4, t5 = 0, 0, 0, 0, 0
-                for i in range(len(result)):
-                    if result[i][2] != temp_topic:
-                        dic_data['point'] += t1 + t2 + t3 + t4 + t5
-                        temp_topic = result[i][2]
-                        t1, t2, t3, t4, t5 = 0, 0, 0, 0, 0
-                        if result[i][3] == 'o':
-                            t1 = 5
-                        if result[i][4] == 'o':
-                            t2 = 5
-                        if result[i][5] == 'o':
-                            t3 = 5
-                        if result[i][6] == 'o':
-                            t4 = 5
-                        if result[i][7] == 'o':
-                            t5 = 5
-                        for j in range(3, 8):
-                            if result[i][j] is None:
-                                break
-                            all_question += 1
-                    else:
-                        if result[i][3] == 'o' and t1 == 0:
-                            t1 = 4
-                        if result[i][4] == 'o' and t2 == 0:
-                            t2 = 4
-                        if result[i][5] == 'o' and t3 == 0:
-                            t3 = 4
-                        if result[i][6] == 'o' and t4 == 0:
-                            t4 = 4
-                        if result[i][7] == 'o' and t5 == 0:
-                            t5 = 4
-
-                    if i == len(result) - 1:
-                        dic_data['point'] += t1 + t2 + t3 + t4 + t5
-
-                    print(t1, t2, t3, t4, t5, dic_data['point'])
-                dic_data['max_point'] = all_question * 5
-                print(all_question, dic_data['max_point'])
+                    dic_data['method'] = 'point_grade_result'
+                    dic_data['point'] = result[1]
+                    dic_data['grade'] = result[2]
 
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':
