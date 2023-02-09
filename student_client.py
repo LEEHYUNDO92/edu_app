@@ -150,6 +150,23 @@ class ThreadClass:
                 self.form.label_stu_my_name.setText(self.form.login_user.uname)
                 self.form.label_stu_grade.setText(dic_data['grade'])
 
+            if dic_data['method'] == 'load_quiz_score_result':
+                print('recv:', dic_data['method'])
+                print('recv_data:', dic_data['data'])
+                table = self.form.table_stu_quiz_result
+                row_num = dic_data['index']
+                table.insertRow(row_num)
+                print(table.rowCount())
+                table.setItem(row_num, 0, QTableWidgetItem(dic_data['data'][0]))
+                table.setItem(row_num, 1, QTableWidgetItem(dic_data['data'][2]))
+                question_num = 0
+                for n in range(3, 8):
+                    if dic_data['data'][n] is None:
+                        table.setItem(row_num, n, QTableWidgetItem(''))
+                    else:
+                        table.setItem(row_num, n, QTableWidgetItem(dic_data['data'][n]))
+                        question_num += 1
+                table.setItem(row_num, 2, QTableWidgetItem(str(dic_data['data'][8])+' / ' + str(question_num)))
 
     # 여기서부터 def send_기능명(self, 매개변수): 이런 식으로 기능별 서버로 데이터 전송하는 코드 작성
     def send_check_id(self, input_id):
@@ -208,6 +225,12 @@ class ThreadClass:
 
     def send_point_grade(self, member_num):
         data = {"method": 'point_grade', "member_num": member_num}
+        json_data = json.dumps(data)
+        self.client_socket.sendall(json_data.encode())
+        print('send:', data['method'])
+
+    def send_load_quiz_score(self, member_num):
+        data = {"method": 'load_quiz_score', "member_num": member_num}
         json_data = json.dumps(data)
         self.client_socket.sendall(json_data.encode())
         print('send:', data['method'])
@@ -348,8 +371,8 @@ class WindowClass(QMainWindow, form_class):
             self.isPWSameChecked = True
 
     def sign_in(self):
-        if 0 in [len(self.input_sign_in_id.text()), len(self.input_sign_in_pw.text()), len(self.input_sign_in_pw_ck.text()),
-                 len(self.input_sign_in_name.text())] or self.auth is None:
+        if 0 in [len(self.input_sign_in_id.text()), len(self.input_sign_in_pw.text()),
+                 len(self.input_sign_in_pw_ck.text()), len(self.input_sign_in_name.text())] or self.auth is None:
             QMessageBox.warning(self, '경고', '모든 입력칸을 확인해주세요')
         elif not self.isIDChecked:
             QMessageBox.warning(self, '경고', '아이디 중복 확인을 해주세요')
@@ -408,7 +431,18 @@ class WindowClass(QMainWindow, form_class):
             self.thread.send_answer(qna_num, member_num, answer)
 
     def load_point(self):
+        self.table_stu_quiz_result.setRowCount(0)
         self.thread.send_point_grade(self.login_user.num)
+        self.thread.send_load_quiz_score(self.login_user.num)
+        time.sleep(0.05)
+        self.table_stu_quiz_result.setColumnWidth(0, 100)
+        self.table_stu_quiz_result.setColumnWidth(1, 100)
+        self.table_stu_quiz_result.setColumnWidth(2, 60)
+        self.table_stu_quiz_result.setColumnWidth(3, 60)
+        self.table_stu_quiz_result.setColumnWidth(4, 60)
+        self.table_stu_quiz_result.setColumnWidth(5, 60)
+        self.table_stu_quiz_result.setColumnWidth(6, 60)
+        self.table_stu_quiz_result.setColumnWidth(7, 60)
 
 
 if __name__ == "__main__":

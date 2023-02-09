@@ -105,7 +105,8 @@ def threaded(client_socket, addr):
                 sql = f"SELECT a.num, b.num, b.uid, b.uname, a.title, a.content, " \
                       f"c.uid, c.uname, a.answer, a.add_time, a.edit_time " \
                       f"FROM qna a " \
-                      f"LEFT JOIN member b on a.student_num = b.num LEFT JOIN member c on a.teacher_num = c.num " \
+                      f"LEFT JOIN member b on a.student_num = b.num " \
+                      f"LEFT JOIN member c on a.teacher_num = c.num " \
                       f"WHERE a.num = {dic_data['qna_num']}"
                 print(sql)
                 with conn_fetch() as cur:
@@ -118,7 +119,8 @@ def threaded(client_socket, addr):
             if dic_data['method'] == 'add_question':
                 print(dic_data['method'], dic_data['member_num'])
                 sql = f"INSERT INTO qna (student_num, title, content, add_time) VALUES " \
-                      f"({dic_data['member_num']}, '{dic_data['title']}', '{dic_data['content']}', '{dic_data['add_time']}')"
+                      f"({dic_data['member_num']}, '{dic_data['title']}', " \
+                      f"'{dic_data['content']}', '{dic_data['add_time']}')"
                 print(sql)
                 with conn_commit() as con:
                     with con.cursor() as cur:
@@ -195,10 +197,18 @@ def threaded(client_socket, addr):
                     dic_data['point'] = result[1]
                     dic_data['grade'] = result[2]
 
+            if dic_data['method'] == 'load_quiz_score':
+                sql = f"SELECT * FROM quiz_result WHERE student_num = {dic_data['member_num']}"
+                print(sql)
+                with conn_fetch() as cur:
+                    cur.execute(sql)
+                    dic_data['result'] = cur.fetchall()
+                    dic_data['method'] = 'load_quiz_score_result'
+
             # 아래는 각 기능에 따라 전송 대상 지정하는 함수, 참고용으로 놔둠
             if dic_data['method'] == 'chat':
                 send_everyone(client_sockets, dic_data)
-            elif dic_data['method'] == 'load_table_result':
+            elif dic_data['method'] in ['load_table_result', 'load_quiz_score_result']:
                 send_big_data(client_sockets, dic_data)
             else:
                 send_single(client_socket, dic_data)
