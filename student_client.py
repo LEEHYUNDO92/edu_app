@@ -10,7 +10,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QRegExpValidator
 
-form_class = uic.loadUiType("edu.ui")[0]
+form_class = uic.loadUiType("edu_rgm.ui")[0]
 
 
 class User:
@@ -49,7 +49,7 @@ class ThreadClass:
 
             if dic_data['method'] == 'login_result':
                 print('recv:', dic_data['method'])
-                if dic_data['method']:
+                if dic_data['result']:
                     self.form.login_user = User(dic_data['login_info'])
                     print('uid:', self.form.login_user.uid)
 
